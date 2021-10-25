@@ -1,4 +1,4 @@
-package com.your.time.bean;
+package com.your.time.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.your.time.util.AppointmentStatus;
+import com.your.time.util.CommonStatus;
 import com.your.time.util.MongodbMapperUtil;
 
 import lombok.AllArgsConstructor;
@@ -21,12 +22,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection=MongodbMapperUtil.Collections.APPOINTMENT)
-public class Appointment extends Audit implements Serializable{
-	private static final long serialVersionUID = 1L;
+public class Appointment implements Serializable{
+
+	private static final long serialVersionUID = 3728852768802389285L;
+	
 	@Id
 	private String id;
 	private String spId;
     private String scId;
+    private String serviceId;
 	private LocalDate day;
 	private LocalTime time;
 	private AppointmentStatus status;
@@ -36,5 +40,10 @@ public class Appointment extends Audit implements Serializable{
 	private Date cancelledDate;
 	private String description;
 	private String declinedReason;
-	private String cancelledReason;
+	private String cancelledReason;	
+	private String parentId;
+	private CommonStatus recStatus;
+	
+	private Date createdOn;
+    private Date updatedOn;
 }

@@ -1,10 +1,12 @@
-package com.your.time.bean;
+package com.your.time.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.your.time.util.CommonStatus;
 import com.your.time.util.MongodbMapperUtil;
 
 import lombok.AllArgsConstructor;
@@ -19,8 +21,8 @@ import lombok.Setter;
 @Document(collection=MongodbMapperUtil.Collections.MASTER_DATA)
 public class MasterData  implements Serializable{
 	
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -1254332970042160497L;
+	
 	@Id
     private String id;
 	private String type;
@@ -28,4 +30,8 @@ public class MasterData  implements Serializable{
 	private String value;
 	private int isActive;
 	private int order;
+	private CommonStatus status;
+	
+	private Date createdOn;
+	private Date updatedOn;
 }

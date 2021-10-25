@@ -8,24 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.your.time.bean.Appointment;
+import com.your.time.entity.Appointment;
 import com.your.time.repository.AppointmentRepository;
+import com.your.time.repository.UserServiceRepository;
 import com.your.time.util.AppointmentStatus;
 
 @Service
-public class BookService {
+public class AppointmentService {
 	
 	@Autowired
-	AppointmentRepository bookingRepository;
+	AppointmentRepository appointmentRepository;
+	
+	@Autowired
+	private UserServiceRepository userServiceRepository;
 
-    private static final Logger logger = Logger.getLogger(BookService.class.getName());
+    private static final Logger logger = Logger.getLogger(AppointmentService.class.getName());
     
-    public Appointment save(Appointment booking){
-    	return bookingRepository.save(booking);
-    }
-
 	public Appointment viewAppointmentDetailsById(Appointment booking) {
-		return bookingRepository.findById(booking.getId()).get();
+		return appointmentRepository.findById(booking.getId()).get();
 	}
 
 	public List<Appointment> getAllAppointmentsByConsumer(Appointment booking) {
@@ -42,7 +42,7 @@ public class BookService {
 		Query query = new Query();
 		List<AppointmentStatus> statuses = new ArrayList<>();
 		statuses.add(AppointmentStatus.NEW);
-		statuses.add(AppointmentStatus.BOOKED);
+		statuses.add(AppointmentStatus.DECLINED);
 		statuses.add(AppointmentStatus.CONFIRMED);
 		statuses.add(AppointmentStatus.RESCHEDULED);
 		//query.addCriteria(Criteria.where(MongodbMapperUtil.Booking.username).is(booking.getUsername()).andOperator(Criteria.where(MongodbMapperUtil.Booking.status).in(statuses)));
@@ -55,12 +55,12 @@ public class BookService {
 
 	public Appointment cancelAppointmentByConsumer(Appointment booking) {
 		//booking.setStatus(BookingStatus.CANCEL.name());
-		return bookingRepository.save(booking);
+		return appointmentRepository.save(booking);
 	}
 
 	public Appointment rescheduleAppointmentByConsumer(Appointment booking) {
 		//booking.setStatus(BookingStatus.RESCHEDULED.name());
-		return bookingRepository.save(booking);
+		return appointmentRepository.save(booking);
 	}
 	/**
 	 * ISP Specific Methods start
@@ -96,7 +96,7 @@ public class BookService {
 		Query query = new Query();
 		List<AppointmentStatus> statuses = new ArrayList<>();
 		statuses.add(AppointmentStatus.NEW);
-		statuses.add(AppointmentStatus.BOOKED);
+		statuses.add(AppointmentStatus.DECLINED);
 		statuses.add(AppointmentStatus.CONFIRMED);
 		statuses.add(AppointmentStatus.RESCHEDULED);
 		//query.addCriteria(Criteria.where(MongodbMapperUtil.Booking.serviceProviderId).is(booking.getServiceProviderId()).andOperator(Criteria.where(MongodbMapperUtil.Booking.status).in(statuses)).andOperator(Criteria.where(MongodbMapperUtil.Booking.createdBy).in(booking.getServiceProviderId())));
@@ -106,17 +106,17 @@ public class BookService {
 
 	public Appointment cancelScheduleByISP(Appointment booking) {
 		//booking.setStatus(BookingStatus.CANCEL.name());
-		return bookingRepository.save(booking);
+		return appointmentRepository.save(booking);
 	}
 	
 	public Appointment confirmScheduleByISP(Appointment booking) {
 		//booking.setStatus(BookingStatus.CONFIRMED.name());
-		return bookingRepository.save(booking);
+		return appointmentRepository.save(booking);
 	}
 
 	public Appointment rescheduleScheduleByISP(Appointment booking) {
 		//booking.setStatus(BookingStatus.RESCHEDULED.name());
-		return bookingRepository.save(booking);
+		return appointmentRepository.save(booking);
 	}
 	
 }

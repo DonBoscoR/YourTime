@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.your.time.bean.ServiceProvider;
-import com.your.time.bean.Status;
+import com.your.time.dto.Status;
+import com.your.time.entity.Service;
 import com.your.time.service.ServiceProviderService;
 import com.your.time.util.YourTimeRestURIConstants;
 
@@ -23,9 +23,9 @@ public class ServiceProviderController {
 	@Autowired
 	private ServiceProviderService serviceProviderService;
 	
-	@PostMapping(value = YourTimeRestURIConstants.ServiceProviderWS.WS_SERVICE_PROVIDER_SIGN_UP)
-	public Status<ServiceProvider> register(@RequestBody ServiceProvider serviceProvider) {
-		Status<ServiceProvider> status = new Status<ServiceProvider>();
+	@PostMapping(value = YourTimeRestURIConstants.ServiceProviderWS.WS_SERVICE_PROVIDER_REGISTER)
+	public Status<Service> register(@RequestBody Service serviceProvider) {
+		Status<Service> status = new Status<Service>();
 		serviceProvider = serviceProviderService.register(serviceProvider);
 		if(serviceProvider != null){
 			status.setStatus(true);
@@ -40,9 +40,9 @@ public class ServiceProviderController {
 	}
 	
 	@GetMapping(value=YourTimeRestURIConstants.ServiceProviderWS.WS_SERVICE_PROVIDER_HOME)
-	public Status<ServiceProvider> home() {
-		Status<ServiceProvider> status = new Status<ServiceProvider>();
-		List<ServiceProvider> serviceProviders = (List<ServiceProvider>) serviceProviderService.findAll();
+	public Status<Service> home() {
+		Status<Service> status = new Status<Service>();
+		List<Service> serviceProviders = (List<Service>) serviceProviderService.findAll();
 		if(serviceProviders == null || serviceProviders.size() == 0){
 			status.setStatus(false);
 			status.setMessage("No service providers available");
@@ -55,10 +55,10 @@ public class ServiceProviderController {
 	}
 	
 	@PostMapping(value = YourTimeRestURIConstants.ServiceProviderWS.WS_SERVICE_PROVIDER_AUTHENDICATE)
-	public Status<ServiceProvider> authendicate(@RequestBody ServiceProvider serviceProvider) {
-		Status<ServiceProvider> status = new Status<ServiceProvider>();
+	public Status<Service> authendicate(@RequestBody Service serviceProvider) {
+		Status<Service> status = new Status<Service>();
 
-		Optional<ServiceProvider> resultedServiceProvider = serviceProviderService.findOne(serviceProvider);
+		Optional<Service> resultedServiceProvider = serviceProviderService.findOne(serviceProvider);
 		if(resultedServiceProvider.isPresent()){
 			status.setStatus(true);
 			status.setResult(resultedServiceProvider.get());

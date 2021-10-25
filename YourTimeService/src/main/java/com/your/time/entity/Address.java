@@ -1,4 +1,4 @@
-package com.your.time.bean;
+package com.your.time.entity;
 
 import lombok.Data;
 

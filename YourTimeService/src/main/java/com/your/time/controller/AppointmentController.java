@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.your.time.bean.Appointment;
-import com.your.time.bean.Status;
-import com.your.time.service.BookService;
+import com.your.time.dto.Status;
+import com.your.time.entity.Appointment;
+import com.your.time.service.AppointmentService;
 import com.your.time.util.YourTimeRestURIConstants;
 
 
@@ -20,9 +20,9 @@ public class AppointmentController {
 	private final AtomicLong counter = new AtomicLong();
 
 	@Autowired
-	private BookService bookService;
+	private AppointmentService bookService;
 
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_BOOK_APPOINTMENT, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_BOOK_APPOINTMENT, method = RequestMethod.POST)
 	public Status<Appointment> bookAppointment(@RequestBody Appointment booking) {
 		Appointment appointment = bookService.save(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -38,7 +38,7 @@ public class AppointmentController {
 		}
 		return status;
 	}
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_VIEW_APPOINTMENT_DETAILS, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_VIEW_APPOINTMENT_DETAILS, method = RequestMethod.POST)
 	public Status<Appointment> viewAppointmentDetailsById(@RequestBody Appointment booking) {
 		Appointment appointment = bookService.viewAppointmentDetailsById(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -55,7 +55,7 @@ public class AppointmentController {
 		return status;
 	}
 	
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_ALL_APPOINTMENTS_BY_CONSUMER, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_ALL_APPOINTMENTS_BY_CONSUMER, method = RequestMethod.POST)
 	public Status<Appointment> getAllAppointmentsByConsumer(@RequestBody Appointment booking) {
 		List<Appointment> appointments = bookService.getAllAppointmentsByConsumer(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -71,7 +71,7 @@ public class AppointmentController {
 		return status;
 	}
 	
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_ALL_ACTIVE_APPOINTMENTS_BY_CONSUMER, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_ALL_ACTIVE_APPOINTMENTS_BY_CONSUMER, method = RequestMethod.POST)
 	public Status<Appointment> getAllActiveAppointmentByConsumer(@RequestBody Appointment booking) {
 		List<Appointment> appointments = bookService.getAllActiveAppointmentByConsumer(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -87,7 +87,7 @@ public class AppointmentController {
 		return status;
 	}
 	
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_APPOINTMENT_CANCEL_BY_CONSUMER, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_APPOINTMENT_CANCEL_BY_CONSUMER, method = RequestMethod.POST)
 	public Status<Appointment> cancelAppointmentByConsumer(@RequestBody Appointment booking) {
 		Appointment appointment = bookService.cancelAppointmentByConsumer(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -103,7 +103,7 @@ public class AppointmentController {
 		}
 		return status;
 	}
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_APPOINTMENT_RESCHEDULE_BY_CONSUMER, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_APPOINTMENT_RESCHEDULE_BY_CONSUMER, method = RequestMethod.POST)
 	public Status<Appointment> rescheduleAppointmentByConsumer(@RequestBody Appointment booking) {
 		Appointment appointment = bookService.rescheduleAppointmentByConsumer(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -123,7 +123,7 @@ public class AppointmentController {
 	/**
 	 * ISP Specific Start
 	 */
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_CREATE_SCHEDULE_BY_ISP, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_CREATE_SCHEDULE_BY_ISP, method = RequestMethod.POST)
 	public Status<Appointment> createScheduleByISP(@RequestBody Appointment booking) {
 		Appointment schedule = bookService.save(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -140,7 +140,7 @@ public class AppointmentController {
 		return status;
 	}
 	
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_VIEW_SCHEDULE_DETAILS_BY_ISP, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_VIEW_SCHEDULE_DETAILS_BY_ISP, method = RequestMethod.POST)
 	public Status<Appointment> viewScheduleDetailsById(@RequestBody Appointment booking) {
 		Appointment schedule = bookService.viewScheduleDetailsById(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -156,7 +156,7 @@ public class AppointmentController {
 		return status;
 	}
 	
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_ALL_SCHEDULES_BY_ISP, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_ALL_SCHEDULES_BY_ISP, method = RequestMethod.POST)
 	public Status<Appointment> getAllSchedulesByISP(@RequestBody Appointment booking) {
 		List<Appointment> schedules = bookService.getAllSchedulesByISP(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -172,7 +172,7 @@ public class AppointmentController {
 		return status;
 	}
 	
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_ALL_ACTIVE_SCHEDULES_BY_ISP, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_ALL_ACTIVE_SCHEDULES_BY_ISP, method = RequestMethod.POST)
 	public Status<Appointment> getAllActiveSchedulesByISP(@RequestBody Appointment booking) {
 		List<Appointment> schedules = bookService.getAllActiveSchedulesByISP(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -188,7 +188,7 @@ public class AppointmentController {
 		return status;
 	}
 	
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_ALL_SCHEDULES_DONE_BY_ISP, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_ALL_SCHEDULES_DONE_BY_ISP, method = RequestMethod.POST)
 	public Status<Appointment> getAllSchedulesDoneByISP(@RequestBody Appointment booking) {
 		List<Appointment> schedules = bookService.getAllSchedulesDoneByISP(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -204,7 +204,7 @@ public class AppointmentController {
 		return status;
 	}
 	
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_ALL_ACTIVE_SCHEDULES_DONE_BY_ISP, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_ALL_ACTIVE_SCHEDULES_DONE_BY_ISP, method = RequestMethod.POST)
 	public Status<Appointment> getAllActiveSchedulesDoneByISP(@RequestBody Appointment booking) {
 		List<Appointment> schedules = bookService.getAllActiveSchedulesDoneByISP(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -220,7 +220,7 @@ public class AppointmentController {
 		return status;
 	}
 	
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_SCHEDULE_CANCEL_BY_ISP, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_SCHEDULE_CANCEL_BY_ISP, method = RequestMethod.POST)
 	public Status<Appointment> cancelScheduleByISP(@RequestBody Appointment booking) {
 		Appointment schedule = bookService.cancelScheduleByISP(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -237,7 +237,7 @@ public class AppointmentController {
 		return status;
 	}
 	
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_SCHEDULE_CONFIRM_BY_ISP, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_SCHEDULE_CONFIRM_BY_ISP, method = RequestMethod.POST)
 	public Status<Appointment> confirmScheduleByISP(@RequestBody Appointment booking) {
 		Appointment schedule = bookService.confirmScheduleByISP(booking);
 		Status<Appointment> status = new Status<Appointment>();
@@ -254,7 +254,7 @@ public class AppointmentController {
 		return status;
 	}
 
-	@RequestMapping(value=YourTimeRestURIConstants.BookingWS.WS_SCHEDULE_RESCHEDULE_BY_ISP, method = RequestMethod.POST)
+	@RequestMapping(value=YourTimeRestURIConstants.AppointmentWS.WS_SCHEDULE_RESCHEDULE_BY_ISP, method = RequestMethod.POST)
 	public Status<Appointment> rescheduleScheduleByISP(@RequestBody Appointment booking) {
 		Appointment schedule = bookService.rescheduleScheduleByISP(booking);
 		Status<Appointment> status = new Status<Appointment>();

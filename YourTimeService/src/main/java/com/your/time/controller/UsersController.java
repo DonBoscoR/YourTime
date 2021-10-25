@@ -1,18 +1,19 @@
 package com.your.time.controller;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.your.time.bean.Status;
-import com.your.time.bean.User;
+import com.your.time.dto.AppointmentDto;
+import com.your.time.dto.Dashboard;
+import com.your.time.dto.Status;
+import com.your.time.entity.Appointment;
+import com.your.time.entity.Feedback;
+import com.your.time.entity.User;
+import com.your.time.repository.AppointmentRepository;
 import com.your.time.service.UserService;
 import com.your.time.util.YourTimeRestURIConstants;
 
@@ -25,26 +26,30 @@ public class UsersController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping(value=YourTimeRestURIConstants.UsersWS.WS_CONSUMER_HOME)
-	public ResponseEntity consumerHome() {
+	@Autowired
+	private AppointmentRepository as;
+	
+	@PostMapping(value = YourTimeRestURIConstants.UsersWS.WS_USER_SIGN_UP)
+	public Status<User> register(@RequestBody User user) {
 		Status<User> status = new Status<User>();
-		List<User> users = (List<User>) userService.findAll();
-		if(users == null || users.size() == 0){
-			status.setStatus(false);
-			status.setMessage("No users available");
-		}else{
+		user = userService.register(user);
+		if(user != null){
 			status.setStatus(true);
-			status.setResults(users);
-			status.setMessage("Authendication is successful");
+			status.setMessage("Registration is successful");
+			status.setResult(user);
+		}else{
+			status.setStatus(false);
+			status.setMessage("Registration is failed");
+			status.setResult(user);
 		}
-		return new ResponseEntity(status, HttpStatus.FOUND);
+		return status;
 	}
 	
-	@PostMapping(value = YourTimeRestURIConstants.UsersWS.WS_CONSUMER_AUTHENDICATE)
+	@PostMapping(value = YourTimeRestURIConstants.UsersWS.WS_USER_AUTHENDICATE)
 	public Status<User>  authendicate(@RequestBody User user) {
 		Status<User> status = new Status<User>();
 
-		Optional<User> resultedUser = userService.findOne(user);
+		Optional<User> resultedUser = Optional.ofNullable(userService.authendicate(user));
 		if(resultedUser.isPresent()){
 			status.setStatus(true);
 			status.setResult(resultedUser.get());
@@ -57,20 +62,137 @@ public class UsersController {
 		return status;
 	}
 	
-	@PostMapping(value = YourTimeRestURIConstants.UsersWS.WS_CONSUMER_SIGN_UP)
-	public Status<User> registerConsumer(@RequestBody User user) {
-		Status<User> status = new Status<User>();
-		//user.setServiceProvider(user.getServiceProviderTye() == null || user.getServiceProviderTye().isEmpty());
-		user = userService.save(user);
-		if(user != null){
+	@PostMapping(value=YourTimeRestURIConstants.UsersWS.WS_USER_HOME)
+	public Status<Dashboard> home(@RequestBody User user) {
+		Status<Dashboard> status = new Status<Dashboard>();
+		
+		Dashboard dashboard = userService.getDashboardDetails(user);
+		status.setResult(dashboard);
+		status.setMessage("Loaded dashboard");
+		status.setStatus(true);
+		return status;
+		
+	}
+	
+	@PostMapping(value=YourTimeRestURIConstants.UsersWS.WS_USER_REQUEST_APPOINTMENT)
+	public Status<Appointment> requestAppointment(@RequestBody AppointmentDto appointmentRequest) {
+		Status<Appointment> status = new Status<Appointment>();
+		
+		Optional<Appointment> appointmentResult = Optional.ofNullable(userService.requestAppointment(appointmentRequest));
+		
+		if(appointmentResult.isPresent()) {
+			status.setResult(appointmentResult.get());
 			status.setStatus(true);
-			status.setMessage("Registration is successful");
-			status.setResult(user);
-		}else{
+			status.setMessage("Appointment request placed successfully");
+		}else {
+			status.setMessage("Appointment request could not be placed. Please retry after sometime.");
 			status.setStatus(false);
-			status.setMessage("Registration is not successful");
-			status.setResult(user);
 		}
 		return status;
+		
+	}
+	
+	@PostMapping(value=YourTimeRestURIConstants.UsersWS.WS_USER_APPROVE_APPOINTMENT)
+	public Status<Appointment> approveAppointment(@RequestBody Appointment appointment) {
+		Status<Appointment> status = new Status<Appointment>();
+		
+		Optional<Appointment> appointmentResult = Optional.ofNullable(userService.approveAppointment(appointment));
+		
+		if(appointmentResult.isPresent()) {
+			status.setResult(appointmentResult.get());
+			status.setStatus(true);
+			status.setMessage("Appointment was approved successfully");
+		}else {
+			status.setMessage("Appointment could not be approved. Please retry after sometime.");
+			status.setStatus(false);
+		}
+		return status;
+	}
+	
+	@PostMapping(value=YourTimeRestURIConstants.UsersWS.WS_USER_DECLINE_APPOINTMENT)
+	public Status<Appointment> declineAppointment(@RequestBody Appointment appointment) {
+		Status<Appointment> status = new Status<Appointment>();
+		
+		Optional<Appointment> appointmentResult = Optional.ofNullable(userService.declineAppointment(appointment));
+		
+		if(appointmentResult.isPresent()) {
+			status.setResult(appointmentResult.get());
+			status.setStatus(true);
+			status.setMessage("Appointment was declined successfully");
+		}else {
+			status.setMessage("Appointment could not be declined. Please retry after sometime.");
+			status.setStatus(false);
+		}
+		return status;
+	}
+	
+	@PostMapping(value=YourTimeRestURIConstants.UsersWS.WS_USER_CANCEL_APPOINTMENT)
+	public Status<Appointment> cancelAppointment(@RequestBody Appointment appointment) {
+		Status<Appointment> status = new Status<Appointment>();
+		
+		Optional<Appointment> appointmentResult = Optional.ofNullable(userService.cancelAppointment(appointment));
+		
+		if(appointmentResult.isPresent()) {
+			status.setResult(appointmentResult.get());
+			status.setStatus(true);
+			status.setMessage("Appointment was cancelled successfully");
+		}else {
+			status.setMessage("Appointment could not be cancelled. Please retry after sometime.");
+			status.setStatus(false);
+		}
+		return status;
+	}
+		
+	@PostMapping(value=YourTimeRestURIConstants.UsersWS.WS_USER_RESCHEDULE_APPOINTMENT)
+	public Status<Appointment> rescheduleAppointment(@RequestBody AppointmentDto appointmentRequest) {
+		Status<Appointment> status = new Status<Appointment>();
+		
+		Optional<Appointment> appointmentResult = Optional.ofNullable(userService.rescheduleAppointment(appointmentRequest));
+		
+		if(appointmentResult.isPresent()) {
+			status.setResult(appointmentResult.get());
+			status.setStatus(true);
+			status.setMessage("Appointment was rescheduled successfully");
+		}else {
+			status.setMessage("Appointment could not be rescheduled. Please retry after sometime.");
+			status.setStatus(false);
+		}
+		return status;
+		
+	}
+	
+	@PostMapping(value=YourTimeRestURIConstants.UsersWS.WS_USER_COMPLETE_APPOINTMENT)
+	public Status<Appointment> completeAppointment(@RequestBody Appointment appointment) {
+		Status<Appointment> status = new Status<Appointment>();
+		
+		Optional<Appointment> appointmentResult = Optional.ofNullable(userService.cancelAppointment(appointment));
+		
+		if(appointmentResult.isPresent()) {
+			status.setResult(appointmentResult.get());
+			status.setStatus(true);
+			status.setMessage("Appointment was cancelled successfully");
+		}else {
+			status.setMessage("Appointment could not be cancelled. Please retry after sometime.");
+			status.setStatus(false);
+		}
+		return status;
+	}
+	
+	@PostMapping(value=YourTimeRestURIConstants.UsersWS.WS_USER_REQUEST_APPOINTMENT)
+	public Status<Feedback> feedbackOnAppointment(@RequestBody Feedback feedback) {
+		Status<Feedback> status = new Status<Feedback>();
+		
+		Optional<Feedback> FeedbackResult = Optional.ofNullable(userService.feedbackOnAppointment(feedback));
+		
+		if(FeedbackResult.isPresent()) {
+			status.setResult(FeedbackResult.get());
+			status.setStatus(true);
+			status.setMessage("Feedback was added to the appointment successfully");
+		}else {
+			status.setMessage("Feedback could not be added to the appointment. Please retry after sometime.");
+			status.setStatus(false);
+		}
+		return status;
+		
 	}
 }

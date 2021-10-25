@@ -87,12 +87,13 @@ public class MongodbMapperUtil {
 	
 	public static class Collections{
 		public final static String USER = "user";
-		public final static String SERVICE_PROVIDER = "service_provider";
-		public final static String SERVICE_CONSUMER = "service_consumer";
+		public final static String SERVICE = "service";
 		public final static String SERVICE_TIMING = "service_timing";
+		public final static String USER_SERVICE = "user_service";
 		public final static String APPOINTMENT = "appointment";
 		public final static String CONSUMER_EVENT = "consumer_event";
 		public final static String FEEDBACK = "feedback";
 		public final static String MASTER_DATA = "master_data";
+		public final static String AUDIT = "audit";
 	}
 }

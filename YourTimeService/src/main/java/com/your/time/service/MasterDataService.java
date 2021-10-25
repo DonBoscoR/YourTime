@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.your.time.bean.MasterData;
+import com.your.time.entity.MasterData;
 import com.your.time.repository.MasterDataRepository;
 
 @Component

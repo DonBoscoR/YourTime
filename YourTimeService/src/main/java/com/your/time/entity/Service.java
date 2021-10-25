@@ -1,4 +1,4 @@
-package com.your.time.bean;
+package com.your.time.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,14 +18,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection=MongodbMapperUtil.Collections.SERVICE_PROVIDER)
-public class ServiceProvider extends Audit implements Serializable{
+@Document(collection=MongodbMapperUtil.Collections.SERVICE)
+public class Service implements Serializable{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1962343282635516467L;
 	
 	@Id
     private String id;
-	private String spId;
+	private String userId;
     private String name;
     private String OfficialName;
     private String displayName;
@@ -47,4 +47,7 @@ public class ServiceProvider extends Audit implements Serializable{
     private Date   otpValidTill;
     
     private CommonStatus status;
+    
+    private Date createdOn;
+    private Date updatedOn;
 }

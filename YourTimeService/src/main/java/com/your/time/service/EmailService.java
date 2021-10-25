@@ -10,8 +10,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import com.your.time.bean.ServiceProvider;
-import com.your.time.bean.User;
+import com.your.time.entity.Service;
+import com.your.time.entity.User;
 
 @Component
 public class EmailService {
@@ -42,7 +42,7 @@ public class EmailService {
 	    mailSender.send(message);      
 	}
 	
-	public void sendOTPEmail(ServiceProvider serviceProvider, String OTP)
+	public void sendOTPEmail(Service serviceProvider, String OTP)
 	        throws UnsupportedEncodingException, MessagingException {
 	    MimeMessage message = mailSender.createMimeMessage();              
 	    MimeMessageHelper helper = new MimeMessageHelper(message);

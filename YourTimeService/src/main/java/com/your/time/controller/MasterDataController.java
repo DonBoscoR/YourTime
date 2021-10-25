@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.your.time.bean.MasterData;
-import com.your.time.bean.Status;
+import com.your.time.dto.Status;
+import com.your.time.entity.MasterData;
 import com.your.time.service.MasterDataService;
 import com.your.time.util.YourTimeRestURIConstants;
 

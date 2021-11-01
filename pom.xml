@@ -8,22 +8,10 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.0.M5</version> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.youtime</groupId>
+    <groupId>com.your.time</groupId>
     <artifactId>YourTime</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>YourTime</name>
-    <description>Blank multi project for Spring Boot + Elm</description>
-
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.youtime</groupId>
-                <artifactId>YourTimeService</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <repositories>
         <repository>
@@ -54,6 +42,8 @@
         </pluginRepository>
     </pluginRepositories>
   <modules>
-    <module>YourTimeService</module>
+    <module>Common</module>
+    <module>Entity</module>
+    <module>Service</module>
   </modules>
 </project>
